@@ -199,15 +199,16 @@ class Elastic2DCordAnimation {
       this.animate();
     }
     const $this = this;
-    const correct = 10;
-    const dt = (performance.now() - this.time) * 10 / (1000 * correct);
+    const correct = 10; // correct 是一個修正參數，原理是藉由多次的去run 迴圈，以便多次重複摩擦力耗減的運算
+    const frameDelay = 10 // frameDelay 是用來做動畫抽幀的常數，可以想像成會讓動畫加速！
+    const dt = (performance.now() - this.time) * frameDelay / (1000 * correct);
     this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height);
     for (let i = 0; i < correct; i++) {
-      this.refreshCords();
-      this.refreshBalls(dt);
+      this.refreshCords(); //更新弦
+      this.refreshBalls(dt); //更新球
     }
 
-    this.drawAll(dt);
+    this.drawAll(dt); // 把全部都畫出來
 
 
     this.time = performance.now();
@@ -218,11 +219,9 @@ class Elastic2DCordAnimation {
     for (let i = 0; i < this.cords.length; i++) {
       const cord = this.cords[i];
       const force = cord.calcForce();
-      // cord.ballFormer.force.incrementBy(force);
+      // 這邊要格外注意的是ballFormer 是用incrementBy, 而不是add, 原因是因為在跑loop的時候，前面幾圈可能已經有賦予ballFormer force ，如果用add給新值，前面的值就被吃掉了
       cord.ballFormer.force.incrementBy(force.multiply(-1).add(cord.ballFormer.gravity.multiply(cord.ballFormer.mass)));
-      // cord.ballLatter.force.decrementBy(force);
-
-
+      // 但是 ballLatter就可以直接用add了
       cord.ballLatter.force = force.add(cord.ballLatter.gravity.multiply(cord.ballLatter.mass));
 
 
@@ -279,8 +278,8 @@ class Elastic2DCordAnimation {
   }
 
   pullBall(x, y) {
-    if (!this.ballGrabbed || this.ballGrabbed.fixed) return;
-    if (this.getDist(x, y, this.ballGrabbed) > MAX_GRAB_DIST) return;
+    if (!this.ballGrabbed || this.ballGrabbed.fixed) return; // 如果已經有被抓到的球或是抓到的球本身有fixed屬性則return
+    if (this.getDist(x, y, this.ballGrabbed) > MAX_GRAB_DIST) return; // 這邊是抓取的最大距離防呆
     this.ballGrabbed.x = x;
     this.ballGrabbed.y = y;
     this.ballGrabbed.velocity = new Vector2D(0, 0);
