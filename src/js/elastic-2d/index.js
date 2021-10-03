@@ -232,13 +232,14 @@ class Elastic2DCordAnimation {
     const frictionConst = Math.pow(0.5, dt / FRICTION_HALF__LIFE);
     for (const ball of this.balls) {
       if (!ball.fixed) {
+        // 速度變化量的向量
         const dv = ball.force.multiply(dt / ball.mass);
 
-        // Update the position using the mean speed in this increment.
+        // 更新位置
         ball.x += dt * (ball.velocity.x + dv.x / 2);
         ball.y += dt * (ball.velocity.y + dv.y / 2);
 
-        // Update the ball's speed. Apply friction to gradually reduce energy.
+        // 先做摩擦力的耗損運算，然後再加上新的速度變化量
         ball.velocity.scaleBy(frictionConst);
         ball.velocity.incrementBy(dv);
 
