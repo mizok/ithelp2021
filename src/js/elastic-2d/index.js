@@ -201,7 +201,7 @@ class Elastic2DCordAnimation {
     }
     const $this = this;
     const frameDelay = 10 // frameDelay 是用來做動畫抽幀的常數，可以想像成會讓動畫加速！
-    const dt = (performance.now() - this.time) * frameDelay / (1000 * correct);
+    const dt = (performance.now() - this.time) * frameDelay / 1000;
     this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height);
     this.refreshCords(); //更新弦
     this.refreshBalls(dt); //更新球
