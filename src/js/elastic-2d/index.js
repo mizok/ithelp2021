@@ -106,7 +106,7 @@ class Cord {
   calcForce() {
     const deltaLength = this.lengthVector().length() - this.cordLength; // 變形量
     const forceValue = deltaLength * this.elasticConst;
-    const force = this.lengthVector().para(forceValue, false);
+    const force = this.lengthVector().para(forceValue, false);// 這邊要注意 force 會跟變形量的方向相反, 所以para的第二參數要給false來轉變成逆向
 
     return force;
   }
@@ -151,6 +151,7 @@ class Elastic2DCordAnimation {
         return index < i
       })
       // 依據每條弦的長短，總合出球的具體位置
+      // 這邊大於0的判斷是用來排除掉第一條弦用的
       if (cordsBefore.length > 0) {
         y = cordsBefore.map(cord => cord.length).reduce((prev, next, index) => {
           const gap = index >= 1 ? BALL.radius * 2 : 0;
