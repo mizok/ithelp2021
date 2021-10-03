@@ -6,6 +6,7 @@ const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plug
 module.exports = {
   entry: {
     inclinedWallBall: ['./src/js/inclined-wall-ball/index.js', './src/scss/main.scss'],
+    elastic2d: ['./src/js/elastic-2d/index.js', './src/scss/main.scss'],
   },
   output: {
     filename: 'assets/js/[name].js',
@@ -97,6 +98,11 @@ module.exports = {
     new HtmlWebpackPlugin({
       chunks: ['inclinedWallBall'],
       filename: `inclined-wall-ball.html`,
+      template: './index.html'
+    }),
+    new HtmlWebpackPlugin({
+      chunks: ['elastic2d'],
+      filename: `elastic-2d.html`,
       template: './index.html'
     }),
   ]
