@@ -200,14 +200,11 @@ class Elastic2DCordAnimation {
       this.animate();
     }
     const $this = this;
-    const correct = 10; // correct 是一個修正參數，原理是藉由多次的去run 迴圈，以便多次重複摩擦力耗減的運算
     const frameDelay = 10 // frameDelay 是用來做動畫抽幀的常數，可以想像成會讓動畫加速！
     const dt = (performance.now() - this.time) * frameDelay / (1000 * correct);
     this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height);
-    for (let i = 0; i < correct; i++) {
-      this.refreshCords(); //更新弦
-      this.refreshBalls(dt); //更新球
-    }
+    this.refreshCords(); //更新弦
+    this.refreshBalls(dt); //更新球
 
     this.drawAll(dt); // 把全部都畫出來
 
