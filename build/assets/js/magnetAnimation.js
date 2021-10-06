@@ -1,11 +1,3 @@
-/*
- * ATTENTION: The "eval" devtool has been used (maybe by default in mode: "development").
- * This devtool is neither made for production nor for readable output files.
- * It uses "eval()" calls to create a separate source file in the browser devtools.
- * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
- * or disable the default devtool with "devtool: false".
- * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
- */
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
@@ -16,27 +8,292 @@
   \*************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"Vector2D\": () => (/* binding */ Vector2D),\n/* harmony export */   \"Point2D\": () => (/* binding */ Point2D)\n/* harmony export */ });\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\nfunction _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }\n\nvar Vector2D = /*#__PURE__*/function () {\n  function Vector2D(x, y) {\n    _classCallCheck(this, Vector2D);\n\n    this.x = x;\n    this.y = y;\n  }\n\n  _createClass(Vector2D, [{\n    key: \"lengthSquared\",\n    value: function lengthSquared() {\n      return this.x * this.x + this.y * this.y;\n    }\n    /**\n     * 求純量值\n     *\n     * @returns\n     * @memberof Vector2D\n     */\n\n  }, {\n    key: \"length\",\n    value: function length() {\n      return Math.sqrt(this.lengthSquared());\n    }\n    /**\n     * 複製該向量\n     *\n     * @returns\n     * @memberof Vector2D\n     */\n\n  }, {\n    key: \"clone\",\n    value: function clone() {\n      return new Vector2D(this.x, this.y);\n    }\n    /**\n     *倒轉該向量\n     *\n     * @memberof Vector2D\n     */\n\n  }, {\n    key: \"negate\",\n    value: function negate() {\n      this.x = -this.x;\n      this.y = -this.y;\n    }\n    /**\n     * 把該向量轉變成單位向量\n     *\n     * @returns\n     * @memberof Vector2D\n     */\n\n  }, {\n    key: \"normalize\",\n    value: function normalize() {\n      var length = this.length();\n\n      if (length > 0) {\n        this.x /= length;\n        this.y /= length;\n      }\n\n      return this.length();\n    }\n    /**\n     * 回傳與某向量的向量和\n     *\n     * @param {*} vec\n     * @returns\n     * @memberof Vector2D\n     */\n\n  }, {\n    key: \"add\",\n    value: function add(vec) {\n      return new Vector2D(this.x + vec.x, this.y + vec.y);\n    }\n    /**\n     * 加上某向量\n     *\n     * @param {*} vec\n     * @memberof Vector2D\n     */\n\n  }, {\n    key: \"incrementBy\",\n    value: function incrementBy(vec) {\n      this.x += vec.x;\n      this.y += vec.y;\n    }\n    /**\n     * \n     * 回傳與某向量的向量差\n     * @param {*} vec\n     * @returns\n     * @memberof Vector2D\n     */\n\n  }, {\n    key: \"subtract\",\n    value: function subtract(vec) {\n      return new Vector2D(this.x - vec.x, this.y - vec.y);\n    }\n    /**\n     * 扣除某向量\n     *\n     * @param {*} vec\n     * @memberof Vector2D\n     */\n\n  }, {\n    key: \"decrementBy\",\n    value: function decrementBy(vec) {\n      this.x -= vec.x;\n      this.y -= vec.y;\n    }\n    /**\n       * 回傳擴增k倍後的向量\n       *\n       * @param {*} k\n       * @memberof Vector2D\n       */\n\n  }, {\n    key: \"multiply\",\n    value: function multiply(k) {\n      return new Vector2D(k * this.x, k * this.y);\n    }\n    /**\n     * 擴增該向量\n     *\n     * @param {*} k\n     * @memberof Vector2D\n     */\n\n  }, {\n    key: \"scaleBy\",\n    value: function scaleBy(k) {\n      this.x *= k;\n      this.y *= k;\n    }\n    /**\n     * 求取該向量與其他向量的內積\n     *\n     * @param {*} vec\n     * @returns\n     * @memberof Vector2D\n     */\n\n  }, {\n    key: \"dotProduct\",\n    value: function dotProduct(vec) {\n      return this.x * vec.x + this.y * vec.y;\n    }\n    /**\n     * 求取此向量映射在某向量上的長度\n     *\n     * @param {*} vec\n     * @returns\n     * @memberof Vector2D\n     */\n\n  }, {\n    key: \"projection\",\n    value: function projection(vec) {\n      var length = this.length();\n      var lengthVec = vec.length();\n      var proj;\n\n      if (length == 0 || lengthVec == 0) {\n        proj = 0;\n      } else {\n        proj = (this.x * vec.x + this.y * vec.y) / lengthVec;\n      }\n\n      return proj;\n    }\n    /**\n     * 回傳一個新向量，新向量的方向會跟作為參數向量相同，但是量值上是作為此向量投射在參數向量上的長度\n     *\n     * @param {*} vec\n     * @returns\n     * @memberof Vector2D\n     */\n\n  }, {\n    key: \"project\",\n    value: function project(vec) {\n      return vec.para(this.projection(vec));\n    }\n    /**\n       * 根據傳入的u值來回傳一個u倍(或-u倍)的單位向量\n       *\n       * @param {*} vec\n       * @returns\n       * @memberof Vector2D\n       */\n\n  }, {\n    key: \"para\",\n    value: function para(u) {\n      var positive = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;\n      var length = this.length();\n      var vec = new Vector2D(this.x, this.y);\n\n      if (positive) {\n        vec.scaleBy(u / length);\n      } else {\n        vec.scaleBy(-u / length);\n      }\n\n      return vec;\n    }\n    /**\n     * 回傳垂直與此向量的u倍單位向量\n     *\n     * @param {*} vec\n     * @returns\n     * @memberof Vector2D\n     */\n\n  }, {\n    key: \"perp\",\n    value: function perp(u) {\n      var anticlockwise = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;\n      if (typeof anticlockwise === 'undefined') anticlockwise = true;\n      var length = this.length();\n      var vec = new Vector2D(this.y, -this.x);\n\n      if (length > 0) {\n        if (anticlockwise) {\n          vec.scaleBy(u / length);\n        } else {\n          vec.scaleBy(-u / length);\n        }\n      } else {\n        vec = new Vector2D(0, 0);\n      }\n\n      return vec;\n    }\n  }, {\n    key: \"addScaled\",\n    value: function addScaled(vec, k) {\n      return new Vector2D(this.x + k * vec.x, this.y + k * vec.y);\n    }\n    /**\n     * 求取該向量與其他向量的夾角\n     *\n     * @param {*} vec\n     * @returns\n     * @memberof Vector2D\n     */\n\n  }]);\n\n  return Vector2D;\n}();\n\n_defineProperty(Vector2D, \"angleBetween\", function (vec1, vec2) {\n  return Math.acos(vec1.dotProduct(vec2) / (vec1.length() * vec2.length()));\n});\n\nvar Point2D = function Point2D(x, y) {\n  _classCallCheck(this, Point2D);\n\n  this.x = x;\n  this.y = y;\n};\n\n//# sourceURL=webpack://webpack_playground/./src/js/class.js?");
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Vector2D": () => (/* binding */ Vector2D),
+/* harmony export */   "Point2D": () => (/* binding */ Point2D)
+/* harmony export */ });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/***/ }),
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-/***/ "./src/js/magnet-animation/index.js":
-/*!******************************************!*\
-  !*** ./src/js/magnet-animation/index.js ***!
-  \******************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _class__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../class */ \"./src/js/class.js\");\nfunction _typeof(obj) { \"@babel/helpers - typeof\"; if (typeof Symbol === \"function\" && typeof Symbol.iterator === \"symbol\") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === \"function\" && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; }; } return _typeof(obj); }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function\"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }\n\nfunction _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }\n\nfunction _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }\n\nfunction _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === \"object\" || typeof call === \"function\")) { return call; } return _assertThisInitialized(self); }\n\nfunction _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return self; }\n\nfunction _isNativeReflectConstruct() { if (typeof Reflect === \"undefined\" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === \"function\") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }\n\nfunction _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }\n\nfunction _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }\n\n\nvar CANVAS = {\n  width: 800,\n  height: 600,\n  background: 'gray'\n};\nvar BALLS = [{\n  x: 300,\n  y: 300,\n  radius: 25,\n  mass: 50\n}, {\n  x: 380,\n  y: 380,\n  radius: 25,\n  mass: 50\n}, {\n  x: 375,\n  y: 330,\n  radius: 25,\n  mass: 50\n}, {\n  x: 200,\n  y: 200,\n  radius: 55,\n  mass: 100\n}, {\n  x: 250,\n  y: 250,\n  radius: 15,\n  mass: 50\n}, {\n  x: 450,\n  y: 450,\n  radius: 10,\n  mass: 10\n}, {\n  x: 600,\n  y: 600,\n  radius: 75,\n  mass: 50\n}];\n\nvar getDist = function getDist(x0, y0, x1, y1) {\n  return Math.sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0));\n};\n\nvar MAGNET_SIZE = 500;\nvar MAGNET_FORCE_CONST = 7000;\n\nvar Circle = /*#__PURE__*/function () {\n  function Circle(x, y, radius) {\n    var fillColor = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'transparent';\n    var strokeColor = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 'black';\n    var lineWidth = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 1;\n\n    _classCallCheck(this, Circle);\n\n    this.x = x;\n    this.y = y;\n    this.fillColor = fillColor;\n    this.strokeColor = strokeColor;\n    this.lineWidth = lineWidth;\n    this.radius = radius;\n  }\n\n  _createClass(Circle, [{\n    key: \"draw\",\n    value: function draw(ctx) {\n      ctx.save();\n      ctx.fillStyle = this.fillColor;\n      ctx.strokeStyle = this.strokeColor;\n      ctx.lineWidth = this.lineWidth;\n      ctx.beginPath();\n      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);\n      ctx.closePath();\n      ctx.fill();\n      ctx.stroke();\n      ctx.restore();\n    }\n  }]);\n\n  return Circle;\n}();\n\nvar Ball = /*#__PURE__*/function (_Circle) {\n  _inherits(Ball, _Circle);\n\n  var _super = _createSuper(Ball);\n\n  function Ball(x, y, radius, mass) {\n    var _this;\n\n    var fillColor = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 'rgba(0,0,0,0.25)';\n    var strokeColor = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 'transparent';\n\n    _classCallCheck(this, Ball);\n\n    _this = _super.call(this, x, y, radius, fillColor, strokeColor);\n    _this.friction = 0.995;\n    _this.force = new _class__WEBPACK_IMPORTED_MODULE_0__.Vector2D(0, 0);\n    _this.acc = new _class__WEBPACK_IMPORTED_MODULE_0__.Vector2D(0, 0);\n    _this.velocity = new _class__WEBPACK_IMPORTED_MODULE_0__.Vector2D(0, 0);\n    _this.mass = mass;\n    return _this;\n  }\n\n  _createClass(Ball, [{\n    key: \"refreshLocation\",\n    value: function refreshLocation(dt) {\n      this.x += this.velocity.x * dt;\n      this.y += this.velocity.y * dt;\n    }\n  }, {\n    key: \"refreshSpeed\",\n    value: function refreshSpeed(dt) {\n      this.velocity.scaleBy(this.friction);\n      this.velocity.incrementBy(this.acc.multiply(dt));\n    }\n  }]);\n\n  return Ball;\n}(Circle);\n\nvar MagnetAnimation = /*#__PURE__*/function () {\n  function MagnetAnimation(ctx) {\n    _classCallCheck(this, MagnetAnimation);\n\n    this.ctx = ctx;\n    this.cvs = ctx.canvas;\n    this.frameIsPaused = false;\n    this.balls = [];\n    this.mouse = {\n      x: 0,\n      y: 0\n    };\n    this.magnet = null;\n    this.init();\n  }\n\n  _createClass(MagnetAnimation, [{\n    key: \"init\",\n    value: function init() {\n      this.time = performance.now();\n      this.setCanvasSize();\n      this.initEvents();\n      this.initBalls();\n      this.animate();\n    }\n  }, {\n    key: \"initBalls\",\n    value: function initBalls() {\n      var _this2 = this;\n\n      BALLS.forEach(function (o, i) {\n        var ball = new Ball(o.x, o.y, o.radius, o.mass);\n\n        _this2.balls.push(ball);\n      });\n    }\n  }, {\n    key: \"initEvents\",\n    value: function initEvents() {\n      this.initVisibilityChangeEvent();\n      this.initMouseEvent();\n    }\n  }, {\n    key: \"initVisibilityChangeEvent\",\n    value: function initVisibilityChangeEvent() {\n      var _this3 = this;\n\n      window.addEventListener('visibilitychange', function () {\n        if (document.visibilityState !== \"visible\") {\n          _this3.frameIsPaused = true;\n        } else {\n          _this3.frameIsPaused = false;\n          _this3.time = performance.now();\n        }\n      });\n    }\n  }, {\n    key: \"initMouseEvent\",\n    value: function initMouseEvent() {\n      var _this4 = this;\n\n      this.cvs.addEventListener('mousedown', function () {\n        _this4.isClicked = true;\n      });\n      this.cvs.addEventListener('mousemove', function (e) {\n        if (!_this4.isClicked) return;\n\n        var rect = _this4.cvs.getBoundingClientRect();\n\n        _this4.mouse.x = e.clientX - rect.left;\n        _this4.mouse.y = e.clientY - rect.top;\n      });\n      this.cvs.addEventListener('mouseup', function () {\n        console.log(_this4.balls);\n        _this4.isClicked = false;\n      });\n      this.cvs.addEventListener('mouseleave', function () {\n        _this4.isClicked = false;\n      });\n    }\n  }, {\n    key: \"drawAll\",\n    value: function drawAll() {\n      this.drawMagnet();\n      this.drawBalls();\n    }\n  }, {\n    key: \"drawMagnet\",\n    value: function drawMagnet() {\n      new Circle(this.mouse.x, this.mouse.y, MAGNET_SIZE / 2).draw(this.ctx);\n    }\n  }, {\n    key: \"drawBalls\",\n    value: function drawBalls() {\n      var _this5 = this;\n\n      this.balls.forEach(function (o, i) {\n        o.draw(_this5.ctx);\n      });\n    }\n  }, {\n    key: \"animate\",\n    value: function animate() {\n      if (this.frameIsPaused) {\n        this.animate();\n      }\n\n      var $this = this;\n      var frameDelay = 10; // frameDelay 是用來做動畫抽幀的常數，可以想像成會讓動畫加速！\n\n      var dt = (performance.now() - this.time) * frameDelay / 1000;\n      this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height);\n      this.drawAll();\n      this.refreshBallsLocation(dt);\n      this.refreshBallsSpeed(dt);\n      this.refreshBallsAcc();\n      this.time = performance.now();\n      requestAnimationFrame(this.animate.bind($this));\n    }\n  }, {\n    key: \"refreshBallsLocation\",\n    value: function refreshBallsLocation(dt) {\n      this.balls.forEach(function (o, i) {\n        o.refreshLocation(dt);\n      });\n    }\n  }, {\n    key: \"refreshBallsSpeed\",\n    value: function refreshBallsSpeed(dt) {\n      this.balls.forEach(function (o, i) {\n        o.refreshSpeed(dt);\n      });\n    }\n  }, {\n    key: \"refreshBallsAcc\",\n    value: function refreshBallsAcc() {\n      var _this6 = this;\n\n      this.balls.forEach(function (o, i) {\n        var distToMouse = getDist(_this6.mouse.x, _this6.mouse.y, o.x, o.y);\n\n        if (distToMouse < MAGNET_SIZE / 2 + o.radius && distToMouse > 1e-2) {\n          o.force = new _class__WEBPACK_IMPORTED_MODULE_0__.Vector2D(_this6.mouse.x - o.x, _this6.mouse.y - o.y).para(MAGNET_FORCE_CONST / distToMouse);\n          o.acc = o.force.multiply(1 / o.mass);\n        } else {\n          o.force = new _class__WEBPACK_IMPORTED_MODULE_0__.Vector2D(0, 0);\n          o.acc = new _class__WEBPACK_IMPORTED_MODULE_0__.Vector2D(0, 0);\n        }\n      });\n    }\n  }, {\n    key: \"setCanvasSize\",\n    value: function setCanvasSize() {\n      this.cvs.width = CANVAS.width;\n      this.cvs.height = CANVAS.height;\n      this.cvs.style.backgroundColor = CANVAS.background;\n    }\n  }]);\n\n  return MagnetAnimation;\n}();\n\n(function () {\n  var ctx = document.querySelector('canvas').getContext('2d');\n  var instance = new MagnetAnimation(ctx);\n})();\n\n//# sourceURL=webpack://webpack_playground/./src/js/magnet-animation/index.js?");
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-/***/ }),
+var Vector2D = /*#__PURE__*/function () {
+  function Vector2D(x, y) {
+    _classCallCheck(this, Vector2D);
 
-/***/ "./src/scss/main.scss":
-/*!****************************!*\
-  !*** ./src/scss/main.scss ***!
-  \****************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+    this.x = x;
+    this.y = y;
+  }
 
-eval("__webpack_require__.r(__webpack_exports__);\n// extracted by mini-css-extract-plugin\n\n\n//# sourceURL=webpack://webpack_playground/./src/scss/main.scss?");
+  _createClass(Vector2D, [{
+    key: "lengthSquared",
+    value: function lengthSquared() {
+      return this.x * this.x + this.y * this.y;
+    }
+    /**
+     * 求純量值
+     *
+     * @returns
+     * @memberof Vector2D
+     */
+
+  }, {
+    key: "length",
+    value: function length() {
+      return Math.sqrt(this.lengthSquared());
+    }
+    /**
+     * 複製該向量
+     *
+     * @returns
+     * @memberof Vector2D
+     */
+
+  }, {
+    key: "clone",
+    value: function clone() {
+      return new Vector2D(this.x, this.y);
+    }
+    /**
+     *倒轉該向量
+     *
+     * @memberof Vector2D
+     */
+
+  }, {
+    key: "negate",
+    value: function negate() {
+      this.x = -this.x;
+      this.y = -this.y;
+    }
+    /**
+     * 把該向量轉變成單位向量
+     *
+     * @returns
+     * @memberof Vector2D
+     */
+
+  }, {
+    key: "normalize",
+    value: function normalize() {
+      var length = this.length();
+
+      if (length > 0) {
+        this.x /= length;
+        this.y /= length;
+      }
+
+      return this.length();
+    }
+    /**
+     * 回傳與某向量的向量和
+     *
+     * @param {*} vec
+     * @returns
+     * @memberof Vector2D
+     */
+
+  }, {
+    key: "add",
+    value: function add(vec) {
+      return new Vector2D(this.x + vec.x, this.y + vec.y);
+    }
+    /**
+     * 加上某向量
+     *
+     * @param {*} vec
+     * @memberof Vector2D
+     */
+
+  }, {
+    key: "incrementBy",
+    value: function incrementBy(vec) {
+      this.x += vec.x;
+      this.y += vec.y;
+    }
+    /**
+     * 
+     * 回傳與某向量的向量差
+     * @param {*} vec
+     * @returns
+     * @memberof Vector2D
+     */
+
+  }, {
+    key: "subtract",
+    value: function subtract(vec) {
+      return new Vector2D(this.x - vec.x, this.y - vec.y);
+    }
+    /**
+     * 扣除某向量
+     *
+     * @param {*} vec
+     * @memberof Vector2D
+     */
+
+  }, {
+    key: "decrementBy",
+    value: function decrementBy(vec) {
+      this.x -= vec.x;
+      this.y -= vec.y;
+    }
+    /**
+       * 回傳擴增k倍後的向量
+       *
+       * @param {*} k
+       * @memberof Vector2D
+       */
+
+  }, {
+    key: "multiply",
+    value: function multiply(k) {
+      return new Vector2D(k * this.x, k * this.y);
+    }
+    /**
+     * 擴增該向量
+     *
+     * @param {*} k
+     * @memberof Vector2D
+     */
+
+  }, {
+    key: "scaleBy",
+    value: function scaleBy(k) {
+      this.x *= k;
+      this.y *= k;
+    }
+    /**
+     * 求取該向量與其他向量的內積
+     *
+     * @param {*} vec
+     * @returns
+     * @memberof Vector2D
+     */
+
+  }, {
+    key: "dotProduct",
+    value: function dotProduct(vec) {
+      return this.x * vec.x + this.y * vec.y;
+    }
+    /**
+     * 求取此向量映射在某向量上的長度
+     *
+     * @param {*} vec
+     * @returns
+     * @memberof Vector2D
+     */
+
+  }, {
+    key: "projection",
+    value: function projection(vec) {
+      var length = this.length();
+      var lengthVec = vec.length();
+      var proj;
+
+      if (length == 0 || lengthVec == 0) {
+        proj = 0;
+      } else {
+        proj = (this.x * vec.x + this.y * vec.y) / lengthVec;
+      }
+
+      return proj;
+    }
+    /**
+     * 回傳一個新向量，新向量的方向會跟作為參數向量相同，但是量值上是作為此向量投射在參數向量上的長度
+     *
+     * @param {*} vec
+     * @returns
+     * @memberof Vector2D
+     */
+
+  }, {
+    key: "project",
+    value: function project(vec) {
+      return vec.para(this.projection(vec));
+    }
+    /**
+       * 根據傳入的u值來回傳一個u倍(或-u倍)的單位向量
+       *
+       * @param {*} vec
+       * @returns
+       * @memberof Vector2D
+       */
+
+  }, {
+    key: "para",
+    value: function para(u) {
+      var positive = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+      var length = this.length();
+      var vec = new Vector2D(this.x, this.y);
+
+      if (positive) {
+        vec.scaleBy(u / length);
+      } else {
+        vec.scaleBy(-u / length);
+      }
+
+      return vec;
+    }
+    /**
+     * 回傳垂直與此向量的u倍單位向量
+     *
+     * @param {*} vec
+     * @returns
+     * @memberof Vector2D
+     */
+
+  }, {
+    key: "perp",
+    value: function perp(u) {
+      var anticlockwise = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+      if (typeof anticlockwise === 'undefined') anticlockwise = true;
+      var length = this.length();
+      var vec = new Vector2D(this.y, -this.x);
+
+      if (length > 0) {
+        if (anticlockwise) {
+          vec.scaleBy(u / length);
+        } else {
+          vec.scaleBy(-u / length);
+        }
+      } else {
+        vec = new Vector2D(0, 0);
+      }
+
+      return vec;
+    }
+  }, {
+    key: "addScaled",
+    value: function addScaled(vec, k) {
+      return new Vector2D(this.x + k * vec.x, this.y + k * vec.y);
+    }
+    /**
+     * 求取該向量與其他向量的夾角
+     *
+     * @param {*} vec
+     * @returns
+     * @memberof Vector2D
+     */
+
+  }]);
+
+  return Vector2D;
+}();
+
+_defineProperty(Vector2D, "angleBetween", function (vec1, vec2) {
+  return Math.acos(vec1.dotProduct(vec2) / (vec1.length() * vec2.length()));
+});
+
+var Point2D = function Point2D(x, y) {
+  _classCallCheck(this, Point2D);
+
+  this.x = x;
+  this.y = y;
+};
 
 /***/ })
 
@@ -96,12 +353,339 @@ eval("__webpack_require__.r(__webpack_exports__);\n// extracted by mini-css-extr
 /******/ 	})();
 /******/ 	
 /************************************************************************/
-/******/ 	
-/******/ 	// startup
-/******/ 	// Load entry module and return exports
-/******/ 	// This entry module can't be inlined because the eval devtool is used.
-/******/ 	__webpack_require__("./src/js/magnet-animation/index.js");
-/******/ 	var __webpack_exports__ = __webpack_require__("./src/scss/main.scss");
-/******/ 	
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be isolated against other entry modules.
+(() => {
+var __webpack_exports__ = {};
+/*!******************************************!*\
+  !*** ./src/js/magnet-animation/index.js ***!
+  \******************************************/
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _class__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../class */ "./src/js/class.js");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
+var CANVAS = {
+  width: 800,
+  height: 600,
+  background: 'gray'
+};
+var BALLS = [{
+  x: 300,
+  y: 300,
+  radius: 25,
+  mass: 50
+}, {
+  x: 380,
+  y: 380,
+  radius: 25,
+  mass: 50
+}, {
+  x: 375,
+  y: 330,
+  radius: 25,
+  mass: 50
+}, {
+  x: 200,
+  y: 200,
+  radius: 55,
+  mass: 100
+}, {
+  x: 250,
+  y: 250,
+  radius: 15,
+  mass: 50
+}, {
+  x: 450,
+  y: 450,
+  radius: 10,
+  mass: 10
+}, {
+  x: 600,
+  y: 600,
+  radius: 75,
+  mass: 50
+}];
+
+var getDist = function getDist(x0, y0, x1, y1) {
+  return Math.sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0));
+};
+
+var MAGNET_SIZE = 500;
+var MAGNET_FORCE_CONST = 7000;
+
+var Circle = /*#__PURE__*/function () {
+  function Circle(x, y, radius) {
+    var fillColor = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'transparent';
+    var strokeColor = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 'black';
+    var lineWidth = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 1;
+
+    _classCallCheck(this, Circle);
+
+    this.x = x;
+    this.y = y;
+    this.fillColor = fillColor;
+    this.strokeColor = strokeColor;
+    this.lineWidth = lineWidth;
+    this.radius = radius;
+  }
+
+  _createClass(Circle, [{
+    key: "draw",
+    value: function draw(ctx) {
+      ctx.save();
+      ctx.fillStyle = this.fillColor;
+      ctx.strokeStyle = this.strokeColor;
+      ctx.lineWidth = this.lineWidth;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+      ctx.restore();
+    }
+  }]);
+
+  return Circle;
+}();
+
+var Ball = /*#__PURE__*/function (_Circle) {
+  _inherits(Ball, _Circle);
+
+  var _super = _createSuper(Ball);
+
+  function Ball(x, y, radius, mass) {
+    var _this;
+
+    var fillColor = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 'rgba(0,0,0,0.25)';
+    var strokeColor = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 'transparent';
+
+    _classCallCheck(this, Ball);
+
+    _this = _super.call(this, x, y, radius, fillColor, strokeColor);
+    _this.friction = 0.995;
+    _this.force = new _class__WEBPACK_IMPORTED_MODULE_0__.Vector2D(0, 0);
+    _this.acc = new _class__WEBPACK_IMPORTED_MODULE_0__.Vector2D(0, 0);
+    _this.velocity = new _class__WEBPACK_IMPORTED_MODULE_0__.Vector2D(0, 0);
+    _this.mass = mass;
+    return _this;
+  }
+
+  _createClass(Ball, [{
+    key: "refreshLocation",
+    value: function refreshLocation(dt) {
+      this.x += this.velocity.x * dt;
+      this.y += this.velocity.y * dt;
+    }
+  }, {
+    key: "refreshSpeed",
+    value: function refreshSpeed(dt) {
+      this.velocity.scaleBy(this.friction);
+      this.velocity.incrementBy(this.acc.multiply(dt));
+    }
+  }]);
+
+  return Ball;
+}(Circle);
+
+var MagnetAnimation = /*#__PURE__*/function () {
+  function MagnetAnimation(ctx) {
+    _classCallCheck(this, MagnetAnimation);
+
+    this.ctx = ctx;
+    this.cvs = ctx.canvas;
+    this.frameIsPaused = false;
+    this.balls = [];
+    this.mouse = {
+      x: 0,
+      y: 0
+    };
+    this.magnet = null;
+    this.init();
+  }
+
+  _createClass(MagnetAnimation, [{
+    key: "init",
+    value: function init() {
+      this.time = performance.now();
+      this.setCanvasSize();
+      this.initEvents();
+      this.initBalls();
+      this.animate();
+    }
+  }, {
+    key: "initBalls",
+    value: function initBalls() {
+      var _this2 = this;
+
+      BALLS.forEach(function (o, i) {
+        var ball = new Ball(o.x, o.y, o.radius, o.mass);
+
+        _this2.balls.push(ball);
+      });
+    }
+  }, {
+    key: "initEvents",
+    value: function initEvents() {
+      this.initVisibilityChangeEvent();
+      this.initMouseEvent();
+    }
+  }, {
+    key: "initVisibilityChangeEvent",
+    value: function initVisibilityChangeEvent() {
+      var _this3 = this;
+
+      window.addEventListener('visibilitychange', function () {
+        if (document.visibilityState !== "visible") {
+          _this3.frameIsPaused = true;
+        } else {
+          _this3.frameIsPaused = false;
+          _this3.time = performance.now();
+        }
+      });
+    }
+  }, {
+    key: "initMouseEvent",
+    value: function initMouseEvent() {
+      var _this4 = this;
+
+      this.cvs.addEventListener('mousedown', function () {
+        _this4.isClicked = true;
+      });
+      this.cvs.addEventListener('mousemove', function (e) {
+        if (!_this4.isClicked) return;
+
+        var rect = _this4.cvs.getBoundingClientRect();
+
+        _this4.mouse.x = e.clientX - rect.left;
+        _this4.mouse.y = e.clientY - rect.top;
+      });
+      this.cvs.addEventListener('mouseup', function () {
+        console.log(_this4.balls);
+        _this4.isClicked = false;
+      });
+      this.cvs.addEventListener('mouseleave', function () {
+        _this4.isClicked = false;
+      });
+    }
+  }, {
+    key: "drawAll",
+    value: function drawAll() {
+      this.drawMagnet();
+      this.drawBalls();
+    }
+  }, {
+    key: "drawMagnet",
+    value: function drawMagnet() {
+      new Circle(this.mouse.x, this.mouse.y, MAGNET_SIZE / 2).draw(this.ctx);
+    }
+  }, {
+    key: "drawBalls",
+    value: function drawBalls() {
+      var _this5 = this;
+
+      this.balls.forEach(function (o, i) {
+        o.draw(_this5.ctx);
+      });
+    }
+  }, {
+    key: "animate",
+    value: function animate() {
+      if (this.frameIsPaused) {
+        this.animate();
+      }
+
+      var $this = this;
+      var frameDelay = 10; // frameDelay 是用來做動畫抽幀的常數，可以想像成會讓動畫加速！
+
+      var dt = (performance.now() - this.time) * frameDelay / 1000;
+      this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height);
+      this.drawAll();
+      this.refreshBallsLocation(dt);
+      this.refreshBallsSpeed(dt);
+      this.refreshBallsAcc();
+      this.time = performance.now();
+      requestAnimationFrame(this.animate.bind($this));
+    }
+  }, {
+    key: "refreshBallsLocation",
+    value: function refreshBallsLocation(dt) {
+      this.balls.forEach(function (o, i) {
+        o.refreshLocation(dt);
+      });
+    }
+  }, {
+    key: "refreshBallsSpeed",
+    value: function refreshBallsSpeed(dt) {
+      this.balls.forEach(function (o, i) {
+        o.refreshSpeed(dt);
+      });
+    }
+  }, {
+    key: "refreshBallsAcc",
+    value: function refreshBallsAcc() {
+      var _this6 = this;
+
+      this.balls.forEach(function (o, i) {
+        var distToMouse = getDist(_this6.mouse.x, _this6.mouse.y, o.x, o.y);
+
+        if (distToMouse < MAGNET_SIZE / 2 + o.radius && distToMouse > 1e-2) {
+          o.force = new _class__WEBPACK_IMPORTED_MODULE_0__.Vector2D(_this6.mouse.x - o.x, _this6.mouse.y - o.y).para(MAGNET_FORCE_CONST / distToMouse);
+          o.acc = o.force.multiply(1 / o.mass);
+        } else {
+          o.force = new _class__WEBPACK_IMPORTED_MODULE_0__.Vector2D(0, 0);
+          o.acc = new _class__WEBPACK_IMPORTED_MODULE_0__.Vector2D(0, 0);
+        }
+      });
+    }
+  }, {
+    key: "setCanvasSize",
+    value: function setCanvasSize() {
+      this.cvs.width = CANVAS.width;
+      this.cvs.height = CANVAS.height;
+      this.cvs.style.backgroundColor = CANVAS.background;
+    }
+  }]);
+
+  return MagnetAnimation;
+}();
+
+(function () {
+  var ctx = document.querySelector('canvas').getContext('2d');
+  var instance = new MagnetAnimation(ctx);
+})();
+})();
+
+// This entry need to be wrapped in an IIFE because it need to be isolated against other entry modules.
+(() => {
+/*!****************************!*\
+  !*** ./src/scss/main.scss ***!
+  \****************************/
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+})();
+
 /******/ })()
 ;
+//# sourceMappingURL=magnetAnimation.js.map
