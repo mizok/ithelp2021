@@ -10,34 +10,34 @@ const MAX_GRAB_DIST = 50;
 const FRICTION_HALF__LIFE = 1.5;
 
 const BALL = {
-  radius: 5,
+  radius: 2,
   color: 'white'
 }
 
 const CORDS = [
   {
     length: 10,
-    elasticConst: 600,
+    elasticConst: 100,
   },
   {
     length: 10,
-    elasticConst: 600,
+    elasticConst: 100,
   },
   {
     length: 10,
-    elasticConst: 600,
+    elasticConst: 100,
   },
   {
     length: 10,
-    elasticConst: 600,
+    elasticConst: 100,
   },
   {
     length: 10,
-    elasticConst: 600,
+    elasticConst: 100,
   },
   {
     length: 10,
-    elasticConst: 600,
+    elasticConst: 100,
   }
 
 
@@ -49,7 +49,7 @@ const GRAVITY = 9.8;
 
 
 
-const BALL_MASS_CONST = 100;
+const BALL_MASS_CONST = 1;
 
 class Ball {
   constructor(x, y, radius, color, fixed) {
@@ -201,10 +201,14 @@ class Elastic2DCordAnimation {
     }
     const $this = this;
     const frameDelay = 10 // frameDelay 是用來做動畫抽幀的常數，可以想像成會讓動畫加速！
-    const dt = (performance.now() - this.time) * frameDelay / 1000;
+    const correct = 1000;
+    const dt = (performance.now() - this.time) * frameDelay / (1000 * correct);
     this.ctx.clearRect(0, 0, this.cvs.width, this.cvs.height);
-    this.refreshCords(); //更新弦
-    this.refreshBalls(dt); //更新球
+
+    for (let i = 0; i < correct; i++) {
+      this.refreshCords(); //更新弦
+      this.refreshBalls(dt); //更新球
+    }
 
     this.drawAll(dt); // 把全部都畫出來
 

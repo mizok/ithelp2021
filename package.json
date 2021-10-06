@@ -37,7 +37,9 @@
     "webpack-cli": "^4.6.0",
     "webpack-dev-server": "^3.11.2"
   },
-  "dependencies": {},
+  "dependencies": {
+    "mersenne-twister": "^1.1.0"
+  },
   "browserslist": [
     "last 2 version",
     "> 1%",

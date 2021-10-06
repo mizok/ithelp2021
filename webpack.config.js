@@ -7,7 +7,8 @@ module.exports = {
   entry: {
     inclinedWallBall: ['./src/js/inclined-wall-ball/index.js', './src/scss/main.scss'],
     elastic2d: ['./src/js/elastic-2d/index.js', './src/scss/main.scss'],
-    magnetAnimation: ['./src/js/magnet-animation/index.js', './src/scss/main.scss']
+    magnetAnimation: ['./src/js/magnet-animation/index.js', './src/scss/main.scss'],
+    particleSys: ['./src/js/particle-sys/index', './src/scss/main.scss']
   },
   output: {
     filename: 'assets/js/[name].js',
@@ -22,6 +23,7 @@ module.exports = {
     compress: true,
   },
   mode: 'development',
+  devtool: 'source-map',
   module: {
     rules: [
       {
@@ -111,5 +113,11 @@ module.exports = {
       filename: `magnet-animation.html`,
       template: './index.html'
     }),
+    new HtmlWebpackPlugin({
+      chunks: ['particleSys'],
+      filename: `particle-sys.html`,
+      template: './index.html'
+    })
+
   ]
 }
