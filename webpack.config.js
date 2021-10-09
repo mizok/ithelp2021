@@ -5,6 +5,7 @@ const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plug
 
 module.exports = {
   entry: {
+    greenScreenKeying: ['./src/js/green-screen-keying/index.js'],
     inclinedWallBall: ['./src/js/inclined-wall-ball/index.js', './src/scss/main.scss'],
     elastic2d: ['./src/js/elastic-2d/index.js', './src/scss/main.scss'],
     magnetAnimation: ['./src/js/magnet-animation/index.js', './src/scss/main.scss'],
@@ -51,6 +52,13 @@ module.exports = {
         type: 'asset/resource',
         generator: {
           filename: 'assets/img/[name][ext]'
+        }
+      },
+      {
+        test: /\.mp4$/,
+        type: 'asset/resource',
+        generator: {
+          filename: 'assets/video/[name][ext]'
         }
       },
       {
@@ -117,7 +125,12 @@ module.exports = {
       chunks: ['particleSys'],
       filename: `particle-sys.html`,
       template: './index.html'
-    })
+    }),
+    new HtmlWebpackPlugin({
+      chunks: ['greenScreenKeying'],
+      filename: `green-screen-keying.html`,
+      template: './index.html'
+    }),
 
   ]
 }
