@@ -30,8 +30,8 @@ class GreenScreenKeying extends Canvas2DFxBase {
       resolve();
     }, false);
 
-    // video 被按下的時候發動 video的play方法，然後開始canvas的渲染
-    this.video.addEventListener('click', () => {
+    // body 被按下的時候發動 video的play方法，然後開始canvas的渲染
+    this.document.body.addEventListener('click', () => {
       this.video.play();
       this.animate();
     }, false);
@@ -45,6 +45,7 @@ class GreenScreenKeying extends Canvas2DFxBase {
       this.videoStyleHeight = (vh / vw) * size;
       this.video.style.width = this.videoStyleWidth + 'px';
       this.video.style.height = this.videoStyleHeight + 'px';
+      this.video.style.pointerEvents = 'none'; // 這一行主要是for移動裝置, 因為移動裝置的video點擊後會自動放大, 這樣就看不到我們的效果了
 
       // 創建一個架空的canvas, 把他的長寬設定成跟video現在一樣
       this.virtualCanvas = document.createElement('canvas');
@@ -57,6 +58,7 @@ class GreenScreenKeying extends Canvas2DFxBase {
     })
 
     this.video.src = videoSrc;
+    this.video.load(); // 這一行主要是for移動裝置, 因為移動裝置的loadeddata必須要用.load來觸發
   }
 
   animate() {

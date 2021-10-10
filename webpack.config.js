@@ -5,6 +5,7 @@ const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plug
 
 module.exports = {
   entry: {
+    blur: ['./src/js/blur/index.js'],
     greenScreenKeying: ['./src/js/green-screen-keying/index.js'],
     inclinedWallBall: ['./src/js/inclined-wall-ball/index.js', './src/scss/main.scss'],
     elastic2d: ['./src/js/elastic-2d/index.js', './src/scss/main.scss'],
@@ -22,6 +23,7 @@ module.exports = {
     contentBase: resolve(__dirname, 'build'),
     open: true,
     compress: true,
+    host: '192.168.1.104'
   },
   mode: 'development',
   devtool: 'source-map',
@@ -131,6 +133,12 @@ module.exports = {
       filename: `green-screen-keying.html`,
       template: './index.html'
     }),
+    new HtmlWebpackPlugin({
+      chunks: ['blur'],
+      filename: `blur.html`,
+      template: './index.html'
+    }),
+
 
   ]
 }
