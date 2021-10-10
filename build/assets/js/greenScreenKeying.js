@@ -817,9 +817,9 @@ var GreenScreenKeying = /*#__PURE__*/function (_Canvas2DFxBase) {
       this.video.addEventListener('loadeddata', function () {
         // Video is loaded and can be played
         resolve();
-      }, false); // video 被按下的時候發動 video的play方法，然後開始canvas的渲染
+      }, false); // body 被按下的時候發動 video的play方法，然後開始canvas的渲染
 
-      this.video.addEventListener('click', function () {
+      this.document.body.addEventListener('click', function () {
         _this2.video.play();
 
         _this2.animate();
@@ -832,7 +832,9 @@ var GreenScreenKeying = /*#__PURE__*/function (_Canvas2DFxBase) {
         _this2.videoStyleWidth = size;
         _this2.videoStyleHeight = vh / vw * size;
         _this2.video.style.width = _this2.videoStyleWidth + 'px';
-        _this2.video.style.height = _this2.videoStyleHeight + 'px'; // 創建一個架空的canvas, 把他的長寬設定成跟video現在一樣
+        _this2.video.style.height = _this2.videoStyleHeight + 'px';
+        _this2.video.style.pointerEvents = 'none'; // 這一行主要是for移動裝置, 因為移動裝置的video點擊後會自動放大, 這樣就看不到我們的效果了
+        // 創建一個架空的canvas, 把他的長寬設定成跟video現在一樣
 
         _this2.virtualCanvas = document.createElement('canvas');
         _this2.virtualCanvas.width = _this2.videoStyleWidth;
@@ -845,6 +847,7 @@ var GreenScreenKeying = /*#__PURE__*/function (_Canvas2DFxBase) {
         document.body.prepend(_this2.video);
       });
       this.video.src = videoSrc;
+      this.video.load(); // 這一行主要是for移動裝置, 因為移動裝置的loadeddata必須要用.load來觸發
     }
   }, {
     key: "animate",
