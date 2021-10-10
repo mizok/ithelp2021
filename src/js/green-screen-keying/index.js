@@ -31,7 +31,7 @@ class GreenScreenKeying extends Canvas2DFxBase {
     }, false);
 
     // body 被按下的時候發動 video的play方法，然後開始canvas的渲染
-    this.document.body.addEventListener('click', () => {
+    document.body.addEventListener('click', () => {
       this.video.play();
       this.animate();
     }, false);
