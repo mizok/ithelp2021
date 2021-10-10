@@ -45,7 +45,7 @@ class GreenScreenKeying extends Canvas2DFxBase {
       this.videoStyleHeight = (vh / vw) * size;
       this.video.style.width = this.videoStyleWidth + 'px';
       this.video.style.height = this.videoStyleHeight + 'px';
-      this.video.style.pointerEvents = 'none'; // 這一行主要是for移動裝置, 因為移動裝置的video點擊後會自動放大, 這樣就看不到我們的效果了
+      this.video.setAttribute('playsinline', true); // 這一行是for ios裝置, 避免他被play的時候自動變成全螢幕
 
       // 創建一個架空的canvas, 把他的長寬設定成跟video現在一樣
       this.virtualCanvas = document.createElement('canvas');
