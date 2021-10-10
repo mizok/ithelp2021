@@ -833,7 +833,10 @@ var GreenScreenKeying = /*#__PURE__*/function (_Canvas2DFxBase) {
         _this2.videoStyleHeight = vh / vw * size;
         _this2.video.style.width = _this2.videoStyleWidth + 'px';
         _this2.video.style.height = _this2.videoStyleHeight + 'px';
-        _this2.video.playsinline = true; // 創建一個架空的canvas, 把他的長寬設定成跟video現在一樣
+
+        _this2.video.setAttribute('playsinline', true); // 這一行是for ios裝置, 避免他被play的時候自動變成全螢幕
+        // 創建一個架空的canvas, 把他的長寬設定成跟video現在一樣
+
 
         _this2.virtualCanvas = document.createElement('canvas');
         _this2.virtualCanvas.width = _this2.videoStyleWidth;
