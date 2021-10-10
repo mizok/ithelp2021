@@ -819,7 +819,7 @@ var GreenScreenKeying = /*#__PURE__*/function (_Canvas2DFxBase) {
         resolve();
       }, false); // body 被按下的時候發動 video的play方法，然後開始canvas的渲染
 
-      this.document.body.addEventListener('click', function () {
+      document.body.addEventListener('click', function () {
         _this2.video.play();
 
         _this2.animate();
