@@ -397,7 +397,7 @@ var Canvas2DFxBase = /*#__PURE__*/function () {
     value: function addEventHandler() {
       var _this3 = this;
 
-      this.cvs.addEventListener('click', function () {
+      this.cvs.addEventListener('mousedown', function () {
         _this3.isClick = true;
       });
       this.cvs.addEventListener('touchstart', function () {
