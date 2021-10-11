@@ -5,8 +5,6 @@ const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plug
 
 module.exports = {
   entry: {
-    blurDoubleTime: ['./src/js/blur/double-time.js'],
-    blurDoubleAxes: ['./src/js/blur/double-axes.js'],
     blur: ['./src/js/blur/index.js'],
     greenScreenKeying: ['./src/js/green-screen-keying/index.js'],
     inclinedWallBall: ['./src/js/inclined-wall-ball/index.js', './src/scss/main.scss'],
@@ -140,16 +138,7 @@ module.exports = {
       filename: `blur.html`,
       template: './index.html'
     }),
-    new HtmlWebpackPlugin({
-      chunks: ['blurDoubleAxes'],
-      filename: `blur-double-axes.html`,
-      template: './index.html'
-    }),
-    new HtmlWebpackPlugin({
-      chunks: ['blur'],
-      filename: `blur.html`,
-      template: './index.html'
-    }),
+
 
 
   ]

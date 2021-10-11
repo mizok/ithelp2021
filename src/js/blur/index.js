@@ -59,14 +59,14 @@ class FilterBlur extends Canvas2DFxBase {
         if (this.isRimPixel(pixelIndex, blurSize)[1]) {
           rTotal += data[(pixelIndex - blurSize + repeatCounter) * 4] * repeatCounter;
           gTotal += data[(pixelIndex - blurSize + repeatCounter) * 4 + 1] * repeatCounter;
-          bTotal += data[(pixelIndex - blurSize + repeatCounter) * 4 + 2] * repeatCounter;;
-          aTotal += data[(pixelIndex - blurSize + repeatCounter) * 4 + 3] * repeatCounter;;
+          bTotal += data[(pixelIndex - blurSize + repeatCounter) * 4 + 2] * repeatCounter;
+          aTotal += data[(pixelIndex - blurSize + repeatCounter) * 4 + 3] * repeatCounter;
         }
         else if (this.isRimPixel(pixelIndex, blurSize)[3]) {
           rTotal += data[(pixelIndex + blurSize - repeatCounter) * 4] * repeatCounter;
           gTotal += data[(pixelIndex + blurSize - repeatCounter) * 4 + 1] * repeatCounter;
-          bTotal += data[(pixelIndex + blurSize - repeatCounter) * 4 + 2] * repeatCounter;;
-          aTotal += data[(pixelIndex + blurSize - repeatCounter) * 4 + 3] * repeatCounter;;
+          bTotal += data[(pixelIndex + blurSize - repeatCounter) * 4 + 2] * repeatCounter;
+          aTotal += data[(pixelIndex + blurSize - repeatCounter) * 4 + 3] * repeatCounter;
         }
       }
       else {
@@ -114,20 +114,15 @@ class FilterBlur extends Canvas2DFxBase {
     imageData = this.ctx.getImageData(0, 0, imgWidth, imgHeight);
     data = imageData.data;
 
-    // 先做一次水平的平均之後把imageData回填
+    // 先做一次水平的平均
     for (let i = 0; i < data.length; i = i + 4) {
       // i is channelIndex
       calcAverage(i, data)
     }
 
-    this.ctx.putImageData(imageData, 0, 0);
-
     //---------------------------------------------------------
 
-    //然後再取得一次當前的imageData做一次垂直的平均之後再度把imageData回填
-    imageData = this.ctx.getImageData(0, 0, imgWidth, imgHeight);
-    data = imageData.data;
-
+    // 再做一次垂直的平均
     for (let i = 0; i < data.length; i = i + 4) {
       // i is channelIndex
       calcAverage(i, data, false)
