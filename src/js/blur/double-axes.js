@@ -2,7 +2,8 @@ import { Canvas2DFxBase } from '../base';
 import * as dat from 'dat.gui';
 
 const STATUS = {
-  blurSize: 0,
+  horizontalBlurSize: 1,
+  verticalBlurSize: 1,
   imgSrc: function () {
     const imgUploader = document.getElementById('img-upload');
     imgUploader.click();
@@ -16,16 +17,18 @@ class FilterBlur extends Canvas2DFxBase {
   }
 
   // blurSize 指的是 (卷積核的寬度-1) / 2
-  isRimPixel(pixelIndex, blurSize) {
-    return pixelIndex / this.cvs.width < blurSize || //位於上邊緣的像素
-      pixelIndex % this.cvs.width < blurSize || //位於左邊緣的像素
-      pixelIndex / this.cvs.width > (this.cvs.height - 1) - blurSize ||//位於下邊緣的像素
-      pixelIndex % this.cvs.width > (this.cvs.width - 1) - blurSize//位於右邊緣的像素
+  isRimPixel(pixelIndex, horizontalBlurSize, verticalBlurSize) {
+    return pixelIndex / this.cvs.width < verticalBlurSize || //位於上邊緣的像素
+      pixelIndex % this.cvs.width < horizontalBlurSize || //位於左邊緣的像素
+      pixelIndex / this.cvs.width > (this.cvs.height - 1) - verticalBlurSize ||//位於下邊緣的像素
+      pixelIndex % this.cvs.width > (this.cvs.width - 1) - horizontalBlurSize//位於右邊緣的像素
   }
 
+
   // blurSize 指的是 (卷積核的寬度-1) / 2
-  boxBlur(img, blurSize = 1) {
-    const kernelSize = blurSize * 2 + 1;
+  boxBlur(img, horizontalBlurSize = 1, verticalBlurSize = 1) {
+    const horizontalKernelSize = horizontalBlurSize * 2 + 1;
+    const verticalKernelSize = verticalBlurSize * 2 + 1;
     const imgWidth = img.width;
     const imgHeight = img.height;
     this.setCanvasSize(imgWidth, imgHeight);
@@ -38,23 +41,23 @@ class FilterBlur extends Canvas2DFxBase {
     const calcAverage = (channelIndex) => {
       const pixelIndex = channelIndex / 4;
       //首先檢查該pixel是不是邊緣像素
-      if (this.isRimPixel(pixelIndex, blurSize)) return;
+      if (this.isRimPixel(pixelIndex, horizontalBlurSize, verticalBlurSize)) return;
 
       //接著總和橫向所有像素 r/g/b/a的和, 取平均
       let rTotal, gTotal, bTotal, aTotal, rAverage, gAverage, bAverage, aAverage;
       rTotal = gTotal = bTotal = aTotal = rAverage = gAverage = bAverage = aAverage = 0;
 
-      for (let i = pixelIndex - blurSize; i < pixelIndex + blurSize + 1; i++) {
+      for (let i = pixelIndex - horizontalBlurSize; i < pixelIndex + horizontalBlurSize + 1; i++) {
         rTotal += data[i * 4];
         gTotal += data[i * 4 + 1];
         bTotal += data[i * 4 + 2];
         aTotal += data[i * 4 + 3];
       }
 
-      rAverage = rTotal / kernelSize;
-      gAverage = gTotal / kernelSize;
-      bAverage = bTotal / kernelSize;
-      aAverage = aTotal / kernelSize;
+      rAverage = rTotal / horizontalKernelSize;
+      gAverage = gTotal / horizontalKernelSize;
+      bAverage = bTotal / horizontalKernelSize;
+      aAverage = aTotal / horizontalKernelSize;
 
       data[channelIndex] = rAverage;
       data[channelIndex + 1] = gAverage;
@@ -63,17 +66,17 @@ class FilterBlur extends Canvas2DFxBase {
 
       rTotal = gTotal = bTotal = aTotal = rAverage = gAverage = bAverage = aAverage = 0;
 
-      for (let i = pixelIndex - imgWidth * blurSize; i < pixelIndex + imgWidth * (blurSize + 1); i = i + imgWidth) {
+      for (let i = pixelIndex - imgWidth * verticalBlurSize; i < pixelIndex + imgWidth * (verticalBlurSize + 1); i = i + imgWidth) {
         rTotal += data[i * 4];
         gTotal += data[i * 4 + 1];
         bTotal += data[i * 4 + 2];
         aTotal += data[i * 4 + 3];
       }
 
-      rAverage = rTotal / kernelSize;
-      gAverage = gTotal / kernelSize;
-      bAverage = bTotal / kernelSize;
-      aAverage = aTotal / kernelSize;
+      rAverage = rTotal / verticalKernelSize;
+      gAverage = gTotal / verticalKernelSize;
+      bAverage = bTotal / verticalKernelSize;
+      aAverage = aTotal / verticalKernelSize;
 
       data[channelIndex] = rAverage;
       data[channelIndex + 1] = gAverage;
@@ -102,10 +105,12 @@ function initControllerUI() {
   hiddenInput.style.display = 'none';
   document.body.append(hiddenInput);
   const gui = new dat.GUI();
-  const blurSizeController = gui.add(STATUS, 'blurSize', 0, 100, 1).name('模糊量');
+  const horizontalBlurSizeController = gui.add(STATUS, 'horizontalBlurSize', 0, 100, 1).name('水平模糊量');
+  const verticalBlurSizeController = gui.add(STATUS, 'verticalBlurSize', 0, 100, 1).name('垂直模糊量');
   const fileUploader = gui.add(STATUS, 'imgSrc').name('上傳圖片');
   return {
-    blurSizeController: blurSizeController,
+    horizontalBlurSizeController: horizontalBlurSizeController,
+    verticalBlurSizeController: verticalBlurSizeController,
     fileUploader: hiddenInput
   }
 }
@@ -131,8 +136,11 @@ function initControllerUI() {
     reader.readAsDataURL(file);
   })
 
-  gui.blurSizeController.onChange(() => {
-    blurKit.boxBlur(img, STATUS.blurSize)
+  gui.horizontalBlurSizeController.onChange(() => {
+    blurKit.boxBlur(img, STATUS.horizontalBlurSize, STATUS.verticalBlurSize)
+  })
+  gui.verticalBlurSizeController.onChange(() => {
+    blurKit.boxBlur(img, STATUS.horizontalBlurSize, STATUS.verticalBlurSize)
   })
 
   //
