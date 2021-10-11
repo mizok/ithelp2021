@@ -3763,16 +3763,12 @@ var FilterBlur = /*#__PURE__*/function (_Canvas2DFxBase) {
             rTotal += data[(pixelIndex - blurSize + repeatCounter) * 4] * repeatCounter;
             gTotal += data[(pixelIndex - blurSize + repeatCounter) * 4 + 1] * repeatCounter;
             bTotal += data[(pixelIndex - blurSize + repeatCounter) * 4 + 2] * repeatCounter;
-            ;
             aTotal += data[(pixelIndex - blurSize + repeatCounter) * 4 + 3] * repeatCounter;
-            ;
           } else if (_this.isRimPixel(pixelIndex, blurSize)[3]) {
             rTotal += data[(pixelIndex + blurSize - repeatCounter) * 4] * repeatCounter;
             gTotal += data[(pixelIndex + blurSize - repeatCounter) * 4 + 1] * repeatCounter;
             bTotal += data[(pixelIndex + blurSize - repeatCounter) * 4 + 2] * repeatCounter;
-            ;
             aTotal += data[(pixelIndex + blurSize - repeatCounter) * 4 + 3] * repeatCounter;
-            ;
           }
         } else {
           var _repeatCounter = 0;
@@ -3815,18 +3811,14 @@ var FilterBlur = /*#__PURE__*/function (_Canvas2DFxBase) {
 
 
       imageData = this.ctx.getImageData(0, 0, imgWidth, imgHeight);
-      data = imageData.data; // 先做一次水平的平均之後把imageData回填
+      data = imageData.data; // 先做一次水平的平均
 
       for (var i = 0; i < data.length; i = i + 4) {
         // i is channelIndex
         calcAverage(i, data);
-      }
+      } //---------------------------------------------------------
+      // 再做一次垂直的平均
 
-      this.ctx.putImageData(imageData, 0, 0); //---------------------------------------------------------
-      //然後再取得一次當前的imageData做一次垂直的平均之後再度把imageData回填
-
-      imageData = this.ctx.getImageData(0, 0, imgWidth, imgHeight);
-      data = imageData.data;
 
       for (var _i2 = 0; _i2 < data.length; _i2 = _i2 + 4) {
         // i is channelIndex
