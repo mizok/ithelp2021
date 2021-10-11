@@ -17,36 +17,85 @@ class FilterBlur extends Canvas2DFxBase {
 
   // blurSize 指的是 (卷積核的寬度-1) / 2
   isRimPixel(pixelIndex, blurSize) {
-    return pixelIndex / this.cvs.width < blurSize || //位於上邊緣的像素
-      pixelIndex % this.cvs.width < blurSize || //位於左邊緣的像素
-      pixelIndex / this.cvs.width > (this.cvs.height - 1) - blurSize ||//位於下邊緣的像素
-      pixelIndex % this.cvs.width > (this.cvs.width - 1) - blurSize//位於右邊緣的像素
+    const isTopPx = pixelIndex / this.cvs.width < blurSize  //位於上邊緣的像素
+    const isLeftPx = pixelIndex % this.cvs.width < blurSize  //位於左邊緣的像素
+    const isBotPx = ~~(pixelIndex / this.cvs.width) > (this.cvs.height - 1) - blurSize //位於下邊緣的像素
+    const isRightPx = pixelIndex % this.cvs.width > (this.cvs.width - 1) - blurSize//位於右邊緣的像素
+    // const bool = isTopPx || isRightPx || isBotPx || isLeftPx;
+    return [isTopPx, isRightPx, isBotPx, isLeftPx];
   }
 
   // blurSize 指的是 (卷積核的寬度-1) / 2
   boxBlur(img, blurSize = 1) {
+    window.ff = [];
     const kernelSize = blurSize * 2 + 1;
     const imgWidth = img.width;
     const imgHeight = img.height;
+    let imageData, data;
+
     this.setCanvasSize(imgWidth, imgHeight);
     this.ctx.drawImage(img, 0, 0, imgWidth, imgHeight);
 
-
-
-    const calcHorizontalAverage = (channelIndex, data) => {
+    const calcAverage = (channelIndex, data, horizontal = true) => {
       const pixelIndex = channelIndex / 4;
-      //首先檢查該pixel是不是邊緣像素
-      if (this.isRimPixel(pixelIndex, blurSize)) return;
 
       //接著總和橫向所有像素 r/g/b/a的和, 取平均
       let rTotal, gTotal, bTotal, aTotal, rAverage, gAverage, bAverage, aAverage;
       rTotal = gTotal = bTotal = aTotal = rAverage = gAverage = bAverage = aAverage = 0;
 
-      for (let i = pixelIndex - blurSize; i < pixelIndex + blurSize + 1; i++) {
-        rTotal += data[i * 4];
-        gTotal += data[i * 4 + 1];
-        bTotal += data[i * 4 + 2];
-        aTotal += data[i * 4 + 3];
+      if (horizontal) {
+        let repeatCounter = 0;
+        for (let i = pixelIndex - blurSize; i < pixelIndex + blurSize + 1; i++) {
+          //檢查 像素i 有沒有跟 持有pixelIndex的像素 在同一橫列，如果沒有，那就代表持有pixelIndex的像素與左邊界或右邊界的距離低於blurSize
+          if (~~(i / imgWidth) !== ~~(pixelIndex / imgWidth)) {
+            repeatCounter += 1
+          }
+          else {
+            rTotal += data[i * 4];
+            gTotal += data[i * 4 + 1];
+            bTotal += data[i * 4 + 2];
+            aTotal += data[i * 4 + 3];
+          }
+        }
+        if (this.isRimPixel(pixelIndex, blurSize)[1]) {
+          rTotal += data[(pixelIndex - blurSize + repeatCounter) * 4] * repeatCounter;
+          gTotal += data[(pixelIndex - blurSize + repeatCounter) * 4 + 1] * repeatCounter;
+          bTotal += data[(pixelIndex - blurSize + repeatCounter) * 4 + 2] * repeatCounter;;
+          aTotal += data[(pixelIndex - blurSize + repeatCounter) * 4 + 3] * repeatCounter;;
+        }
+        else if (this.isRimPixel(pixelIndex, blurSize)[3]) {
+          rTotal += data[(pixelIndex + blurSize - repeatCounter) * 4] * repeatCounter;
+          gTotal += data[(pixelIndex + blurSize - repeatCounter) * 4 + 1] * repeatCounter;
+          bTotal += data[(pixelIndex + blurSize - repeatCounter) * 4 + 2] * repeatCounter;;
+          aTotal += data[(pixelIndex + blurSize - repeatCounter) * 4 + 3] * repeatCounter;;
+        }
+      }
+      else {
+        let repeatCounter = 0;
+        for (let i = pixelIndex - imgWidth * blurSize; i < pixelIndex + imgWidth * (blurSize + 1); i = i + imgWidth) {
+          //檢查 i 若低於0, 或是大於最大位列像素的index，那就代表持有pixelIndex的像素與上邊界或下邊界的距離低於blurSize
+          if (i < 0 || i > imgWidth * imgHeight - 1) {
+            repeatCounter += 1
+          }
+          else {
+            rTotal += data[i * 4];
+            gTotal += data[i * 4 + 1];
+            bTotal += data[i * 4 + 2];
+            aTotal += data[i * 4 + 3];
+          }
+        }
+        if (this.isRimPixel(pixelIndex, blurSize)[0]) {
+          rTotal += data[(pixelIndex - imgWidth * (blurSize - repeatCounter)) * 4] * repeatCounter;
+          gTotal += data[(pixelIndex - imgWidth * (blurSize - repeatCounter)) * 4 + 1] * repeatCounter;
+          bTotal += data[(pixelIndex - imgWidth * (blurSize - repeatCounter)) * 4 + 2] * repeatCounter;
+          aTotal += data[(pixelIndex - imgWidth * (blurSize - repeatCounter)) * 4 + 3] * repeatCounter;
+        }
+        else if (this.isRimPixel(pixelIndex, blurSize)[2]) {
+          rTotal += data[(pixelIndex + imgWidth * (blurSize - repeatCounter)) * 4] * repeatCounter;
+          gTotal += data[(pixelIndex + imgWidth * (blurSize - repeatCounter)) * 4 + 1] * repeatCounter;
+          bTotal += data[(pixelIndex + imgWidth * (blurSize - repeatCounter)) * 4 + 2] * repeatCounter;
+          aTotal += data[(pixelIndex + imgWidth * (blurSize - repeatCounter)) * 4 + 3] * repeatCounter;
+        }
       }
 
       rAverage = rTotal / kernelSize;
@@ -60,56 +109,31 @@ class FilterBlur extends Canvas2DFxBase {
       data[channelIndex + 3] = aAverage;
     }
 
-    const calcVerticalalAverage = (channelIndex, data) => {
-      const pixelIndex = channelIndex / 4;
-      //首先檢查該pixel是不是邊緣像素
-      if (this.isRimPixel(pixelIndex, blurSize)) return;
+    //---------------------------------------------------------
 
-      //接著總和橫向所有像素 r/g/b/a的和, 取平均
-      let rTotal, gTotal, bTotal, aTotal, rAverage, gAverage, bAverage, aAverage;
-      rTotal = gTotal = bTotal = aTotal = rAverage = gAverage = bAverage = aAverage = 0;
-
-      for (let i = pixelIndex - imgWidth * blurSize; i < pixelIndex + imgWidth * (blurSize + 1); i = i + imgWidth) {
-        rTotal += data[i * 4];
-        gTotal += data[i * 4 + 1];
-        bTotal += data[i * 4 + 2];
-        aTotal += data[i * 4 + 3];
-      }
-
-      rAverage = rTotal / kernelSize;
-      gAverage = gTotal / kernelSize;
-      bAverage = bTotal / kernelSize;
-      aAverage = aTotal / kernelSize;
-
-      data[channelIndex] = rAverage;
-      data[channelIndex + 1] = gAverage;
-      data[channelIndex + 2] = bAverage;
-      data[channelIndex + 3] = aAverage;
-
-    }
-
-    let imageData, data
-
+    // 取得當前的imageData
     imageData = this.ctx.getImageData(0, 0, imgWidth, imgHeight);
     data = imageData.data;
 
+    // 先做一次水平的平均之後把imageData回填
     for (let i = 0; i < data.length; i = i + 4) {
       // i is channelIndex
-      calcHorizontalAverage(i, data)
+      calcAverage(i, data)
     }
 
-    this.ctx.clearRect(0, 0, imgWidth, imgHeight);
     this.ctx.putImageData(imageData, 0, 0);
 
+    //---------------------------------------------------------
+
+    // 然後再取得一次當前的imageData做一次垂直的平均之後再度把imageData回填
     imageData = this.ctx.getImageData(0, 0, imgWidth, imgHeight);
     data = imageData.data;
 
     for (let i = 0; i < data.length; i = i + 4) {
       // i is channelIndex
-      calcVerticalalAverage(i, data)
+      calcAverage(i, data, false)
     }
 
-    this.ctx.clearRect(0, 0, imgWidth, imgHeight);
     this.ctx.putImageData(imageData, 0, 0);
 
     return imageData;
