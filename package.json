@@ -38,6 +38,7 @@
     "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
+    "dat.gui": "^0.7.7",
     "mersenne-twister": "^1.1.0"
   },
   "browserslist": [

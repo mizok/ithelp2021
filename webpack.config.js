@@ -23,7 +23,7 @@ module.exports = {
     contentBase: resolve(__dirname, 'build'),
     open: true,
     compress: true,
-    host: '192.168.1.104'
+    // host: '192.168.1.104'
   },
   mode: 'development',
   devtool: 'source-map',

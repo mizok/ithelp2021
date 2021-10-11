@@ -97,7 +97,7 @@ export class Canvas2DFxBase {
 
 
   addEventHandler() {
-    this.cvs.addEventListener('click', () => {
+    this.cvs.addEventListener('mousedown', () => {
       this.isClick = true;
     })
     this.cvs.addEventListener('touchstart', () => {
