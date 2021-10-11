@@ -1,3 +1,4 @@
+const imgDemo = require('../../img/green.jpg');
 import { Canvas2DFxBase } from '../base';
 import * as dat from 'dat.gui';
 
@@ -21,13 +22,11 @@ class FilterBlur extends Canvas2DFxBase {
     const isLeftPx = pixelIndex % this.cvs.width < blurSize  //位於左邊緣的像素
     const isBotPx = ~~(pixelIndex / this.cvs.width) > (this.cvs.height - 1) - blurSize //位於下邊緣的像素
     const isRightPx = pixelIndex % this.cvs.width > (this.cvs.width - 1) - blurSize//位於右邊緣的像素
-    // const bool = isTopPx || isRightPx || isBotPx || isLeftPx;
     return [isTopPx, isRightPx, isBotPx, isLeftPx];
   }
 
   // blurSize 指的是 (卷積核的寬度-1) / 2
   boxBlur(img, blurSize = 1) {
-    window.ff = [];
     const kernelSize = blurSize * 2 + 1;
     const imgWidth = img.width;
     const imgHeight = img.height;
@@ -125,7 +124,7 @@ class FilterBlur extends Canvas2DFxBase {
 
     //---------------------------------------------------------
 
-    // 然後再取得一次當前的imageData做一次垂直的平均之後再度把imageData回填
+    //然後再取得一次當前的imageData做一次垂直的平均之後再度把imageData回填
     imageData = this.ctx.getImageData(0, 0, imgWidth, imgHeight);
     data = imageData.data;
 
@@ -163,6 +162,10 @@ function initControllerUI() {
   const gui = initControllerUI();
   const reader = new FileReader();
   const img = new Image();
+  img.onload = () => {
+    blurKit.boxBlur(img, STATUS.blurSize)
+  }
+  img.src = imgDemo;
 
   // 設定上傳圖片時的操作
   gui.fileUploader.addEventListener('change', (e) => {
