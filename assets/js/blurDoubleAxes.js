@@ -3646,8 +3646,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 var STATUS = {
-  horizontalBlurSize: 1,
-  verticalBlurSize: 1,
+  blurSize: 0,
   imgSrc: function imgSrc() {
     var imgUploader = document.getElementById('img-upload');
     imgUploader.click();
@@ -3668,78 +3667,88 @@ var FilterBlur = /*#__PURE__*/function (_Canvas2DFxBase) {
 
   _createClass(FilterBlur, [{
     key: "isRimPixel",
-    value: function isRimPixel(pixelIndex, horizontalBlurSize, verticalBlurSize) {
-      return pixelIndex / this.cvs.width < verticalBlurSize || //位於上邊緣的像素
-      pixelIndex % this.cvs.width < horizontalBlurSize || //位於左邊緣的像素
-      pixelIndex / this.cvs.width > this.cvs.height - 1 - verticalBlurSize || //位於下邊緣的像素
-      pixelIndex % this.cvs.width > this.cvs.width - 1 - horizontalBlurSize; //位於右邊緣的像素
+    value: function isRimPixel(pixelIndex, blurSize) {
+      var isTopPx = pixelIndex / this.cvs.width < blurSize; //位於上邊緣的像素
+
+      var isLeftPx = pixelIndex % this.cvs.width < blurSize; //位於左邊緣的像素
+
+      var isBotPx = pixelIndex / this.cvs.width > this.cvs.height - 1 - blurSize; //位於下邊緣的像素
+
+      var isRightPx = pixelIndex % this.cvs.width > this.cvs.width - 1 - blurSize; //位於右邊緣的像素
+
+      var bool = isTopPx || isRightPx || isBotPx || isLeftPx;
+      var boolArray = [isTopPx, isRightPx, isBotPx, isLeftPx];
+      return {
+        bool: bool,
+        boolArray: boolArray
+      };
     } // blurSize 指的是 (卷積核的寬度-1) / 2
 
   }, {
     key: "boxBlur",
     value: function boxBlur(img) {
-      var _this = this;
-
-      var horizontalBlurSize = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
-      var verticalBlurSize = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
-      var horizontalKernelSize = horizontalBlurSize * 2 + 1;
-      var verticalKernelSize = verticalBlurSize * 2 + 1;
+      var blurSize = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+      var kernelSize = blurSize * 2 + 1;
       var imgWidth = img.width;
       var imgHeight = img.height;
+      var imageData, data;
       this.setCanvasSize(imgWidth, imgHeight);
-      this.ctx.drawImage(img, 0, 0, imgWidth, imgHeight); // 先取得imageData
+      this.ctx.drawImage(img, 0, 0, imgWidth, imgHeight);
 
-      var imageData = this.ctx.getImageData(0, 0, imgWidth, imgHeight);
-      var data = imageData.data;
-
-      var calcAverage = function calcAverage(channelIndex) {
-        var pixelIndex = channelIndex / 4; //首先檢查該pixel是不是邊緣像素
-
-        if (_this.isRimPixel(pixelIndex, horizontalBlurSize, verticalBlurSize)) return; //接著總和橫向所有像素 r/g/b/a的和, 取平均
+      var calcAverage = function calcAverage(channelIndex, data) {
+        var horizontal = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+        var pixelIndex = channelIndex / 4; //接著總和橫向所有像素 r/g/b/a的和, 取平均
 
         var rTotal, gTotal, bTotal, aTotal, rAverage, gAverage, bAverage, aAverage;
         rTotal = gTotal = bTotal = aTotal = rAverage = gAverage = bAverage = aAverage = 0;
 
-        for (var i = pixelIndex - horizontalBlurSize; i < pixelIndex + horizontalBlurSize + 1; i++) {
-          rTotal += data[i * 4];
-          gTotal += data[i * 4 + 1];
-          bTotal += data[i * 4 + 2];
-          aTotal += data[i * 4 + 3];
+        if (horizontal) {
+          for (var i = pixelIndex - blurSize; i < pixelIndex + blurSize + 1; i++) {
+            rTotal += data[i * 4];
+            gTotal += data[i * 4 + 1];
+            bTotal += data[i * 4 + 2];
+            aTotal += data[i * 4 + 3];
+          }
+        } else {
+          for (var _i = pixelIndex - imgWidth * blurSize; _i < pixelIndex + imgWidth * (blurSize + 1); _i = _i + imgWidth) {
+            rTotal += data[_i * 4];
+            gTotal += data[_i * 4 + 1];
+            bTotal += data[_i * 4 + 2];
+            aTotal += data[_i * 4 + 3];
+          }
         }
 
-        rAverage = rTotal / horizontalKernelSize;
-        gAverage = gTotal / horizontalKernelSize;
-        bAverage = bTotal / horizontalKernelSize;
-        aAverage = aTotal / horizontalKernelSize;
+        rAverage = rTotal / kernelSize;
+        gAverage = gTotal / kernelSize;
+        bAverage = bTotal / kernelSize;
+        aAverage = aTotal / kernelSize;
         data[channelIndex] = rAverage;
         data[channelIndex + 1] = gAverage;
         data[channelIndex + 2] = bAverage;
         data[channelIndex + 3] = aAverage;
-        rTotal = gTotal = bTotal = aTotal = rAverage = gAverage = bAverage = aAverage = 0;
+      }; //---------------------------------------------------------
+      // 取得當前的imageData
 
-        for (var _i = pixelIndex - imgWidth * verticalBlurSize; _i < pixelIndex + imgWidth * (verticalBlurSize + 1); _i = _i + imgWidth) {
-          rTotal += data[_i * 4];
-          gTotal += data[_i * 4 + 1];
-          bTotal += data[_i * 4 + 2];
-          aTotal += data[_i * 4 + 3];
-        }
 
-        rAverage = rTotal / verticalKernelSize;
-        gAverage = gTotal / verticalKernelSize;
-        bAverage = bTotal / verticalKernelSize;
-        aAverage = aTotal / verticalKernelSize;
-        data[channelIndex] = rAverage;
-        data[channelIndex + 1] = gAverage;
-        data[channelIndex + 2] = bAverage;
-        data[channelIndex + 3] = aAverage;
-      };
+      imageData = this.ctx.getImageData(0, 0, imgWidth, imgHeight);
+      data = imageData.data; // 先做一次水平的平均之後把imageData回填
 
       for (var i = 0; i < data.length; i = i + 4) {
         // i is channelIndex
-        calcAverage(i);
+        calcAverage(i, data);
       }
 
-      this.ctx.clearRect(0, 0, imgWidth, imgHeight);
+      this.ctx.putImageData(imageData, 0, 0); //---------------------------------------------------------
+      // 然後再取得一次當前的imageData做一次垂直的平均之後再度把imageData回填
+
+      imageData = this.ctx.getImageData(0, 0, imgWidth, imgHeight);
+      data = imageData.data;
+
+      for (var _i2 = 0; _i2 < data.length; _i2 = _i2 + 4) {
+        // i is channelIndex
+        calcAverage(_i2, data, false);
+      }
+
       this.ctx.putImageData(imageData, 0, 0);
       return imageData;
     }
@@ -3755,12 +3764,10 @@ function initControllerUI() {
   hiddenInput.style.display = 'none';
   document.body.append(hiddenInput);
   var gui = new dat_gui__WEBPACK_IMPORTED_MODULE_1__.GUI();
-  var horizontalBlurSizeController = gui.add(STATUS, 'horizontalBlurSize', 0, 100, 1).name('水平模糊量');
-  var verticalBlurSizeController = gui.add(STATUS, 'verticalBlurSize', 0, 100, 1).name('垂直模糊量');
+  var blurSizeController = gui.add(STATUS, 'blurSize', 0, 100, 1).name('模糊量');
   var fileUploader = gui.add(STATUS, 'imgSrc').name('上傳圖片');
   return {
-    horizontalBlurSizeController: horizontalBlurSizeController,
-    verticalBlurSizeController: verticalBlurSizeController,
+    blurSizeController: blurSizeController,
     fileUploader: hiddenInput
   };
 }
@@ -3786,11 +3793,8 @@ function initControllerUI() {
 
     reader.readAsDataURL(file);
   });
-  gui.horizontalBlurSizeController.onChange(function () {
-    blurKit.boxBlur(img, STATUS.horizontalBlurSize, STATUS.verticalBlurSize);
-  });
-  gui.verticalBlurSizeController.onChange(function () {
-    blurKit.boxBlur(img, STATUS.horizontalBlurSize, STATUS.verticalBlurSize);
+  gui.blurSizeController.onChange(function () {
+    blurKit.boxBlur(img, STATUS.blurSize);
   }); //
 })();
 })();
