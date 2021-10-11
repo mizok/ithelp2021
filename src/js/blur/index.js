@@ -31,11 +31,9 @@ class FilterBlur extends Canvas2DFxBase {
     this.setCanvasSize(imgWidth, imgHeight);
     this.ctx.drawImage(img, 0, 0, imgWidth, imgHeight);
 
-    // 先取得imageData
-    const imageData = this.ctx.getImageData(0, 0, imgWidth, imgHeight);
-    const data = imageData.data;
 
-    const calcAverage = (channelIndex) => {
+
+    const calcHorizontalAverage = (channelIndex, data) => {
       const pixelIndex = channelIndex / 4;
       //首先檢查該pixel是不是邊緣像素
       if (this.isRimPixel(pixelIndex, blurSize)) return;
@@ -60,7 +58,15 @@ class FilterBlur extends Canvas2DFxBase {
       data[channelIndex + 1] = gAverage;
       data[channelIndex + 2] = bAverage;
       data[channelIndex + 3] = aAverage;
+    }
 
+    const calcVerticalalAverage = (channelIndex, data) => {
+      const pixelIndex = channelIndex / 4;
+      //首先檢查該pixel是不是邊緣像素
+      if (this.isRimPixel(pixelIndex, blurSize)) return;
+
+      //接著總和橫向所有像素 r/g/b/a的和, 取平均
+      let rTotal, gTotal, bTotal, aTotal, rAverage, gAverage, bAverage, aAverage;
       rTotal = gTotal = bTotal = aTotal = rAverage = gAverage = bAverage = aAverage = 0;
 
       for (let i = pixelIndex - imgWidth * blurSize; i < pixelIndex + imgWidth * (blurSize + 1); i = i + imgWidth) {
@@ -79,12 +85,28 @@ class FilterBlur extends Canvas2DFxBase {
       data[channelIndex + 1] = gAverage;
       data[channelIndex + 2] = bAverage;
       data[channelIndex + 3] = aAverage;
+
     }
 
+    let imageData, data
+
+    imageData = this.ctx.getImageData(0, 0, imgWidth, imgHeight);
+    data = imageData.data;
 
     for (let i = 0; i < data.length; i = i + 4) {
       // i is channelIndex
-      calcAverage(i);
+      calcHorizontalAverage(i, data)
+    }
+
+    this.ctx.clearRect(0, 0, imgWidth, imgHeight);
+    this.ctx.putImageData(imageData, 0, 0);
+
+    imageData = this.ctx.getImageData(0, 0, imgWidth, imgHeight);
+    data = imageData.data;
+
+    for (let i = 0; i < data.length; i = i + 4) {
+      // i is channelIndex
+      calcVerticalalAverage(i, data)
     }
 
     this.ctx.clearRect(0, 0, imgWidth, imgHeight);
