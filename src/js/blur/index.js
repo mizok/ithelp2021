@@ -32,7 +32,7 @@ class FilterBlur extends Canvas2DFxBase {
     this.ctx.drawImage(img, 0, 0, imgWidth, imgHeight);
 
     // 先取得imageData
-    let imageData = this.ctx.getImageData(0, 0, imgWidth, imgHeight);
+    const imageData = this.ctx.getImageData(0, 0, imgWidth, imgHeight);
     const data = imageData.data;
 
     const calcAverage = (channelIndex) => {
@@ -87,7 +87,8 @@ class FilterBlur extends Canvas2DFxBase {
       calcAverage(i);
     }
 
-
+    this.ctx.clearRect(0, 0, imgWidth, imgHeight);
+    this.ctx.putImageData(imageData, 0, 0);
 
 
   }
