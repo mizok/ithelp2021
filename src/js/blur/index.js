@@ -130,7 +130,6 @@ class FilterBlur extends Canvas2DFxBase {
 
     this.ctx.putImageData(imageData, 0, 0);
 
-    return imageData;
   }
 
 }

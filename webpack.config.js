@@ -5,6 +5,7 @@ const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plug
 
 module.exports = {
   entry: {
+    silkyWave: ['./src/js/silky-wave/index.js', './src/scss/main.scss'],
     blur: ['./src/js/blur/index.js'],
     greenScreenKeying: ['./src/js/green-screen-keying/index.js'],
     inclinedWallBall: ['./src/js/inclined-wall-ball/index.js', './src/scss/main.scss'],
@@ -136,6 +137,11 @@ module.exports = {
     new HtmlWebpackPlugin({
       chunks: ['blur'],
       filename: `blur.html`,
+      template: './index.html'
+    }),
+    new HtmlWebpackPlugin({
+      chunks: ['silkyWave'],
+      filename: `silky-wave.html`,
       template: './index.html'
     }),
 
