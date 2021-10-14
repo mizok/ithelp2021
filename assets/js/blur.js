@@ -3826,7 +3826,6 @@ var FilterBlur = /*#__PURE__*/function (_Canvas2DFxBase) {
       }
 
       this.ctx.putImageData(imageData, 0, 0);
-      return imageData;
     }
   }]);
 
