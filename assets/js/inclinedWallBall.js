@@ -577,7 +577,6 @@ var InclinedWallsAndBouncingBallsAnimation = /*#__PURE__*/function () {
           var vectorBToBallProj = vectorBToBall.project(vectorAB);
           var distVector = vectorAToBall.subtract(vectorAToBallProj);
           var dist = distVector.length();
-          if (!dist) return;
           var collisionDetection = dist < ball.radius && vectorAToBallProj.length() < vectorAB.length() && vectorBToBallProj.length() < vectorAB.length();
 
           if (collisionDetection) {
